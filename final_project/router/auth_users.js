@@ -25,11 +25,11 @@ regd_users.post("/login", (req,res) => {
       message: "Username and password are required"
     });
   }
-
+ 
   if (authenticatedUser(username, password)) {
     const accessToken = jwt.sign(
       { username, password },
-      "access",
+      "fingerprint_customer",
       { expiresIn: "1h" }
     );
 
@@ -39,7 +39,10 @@ regd_users.post("/login", (req,res) => {
     };
 
     return res.status(200).json({
-      message: "User successfully logged in"
+      message: "User successfully logged in",
+      //author: req.session.authorization,
+      token: accessToken,
+      //person: username
     });
   }
 
