@@ -77,7 +77,7 @@ public_users.get('/author/:author', async function (req, res) {
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title', async function (req, res) {
   //Write your code here
   try {
   const title = req.params.title;
@@ -91,7 +91,7 @@ public_users.get('/title/:title',function (req, res) {
   }  
   return res.send(booksByTitle);
 } catch (error){
- return res.status(500).json({ message: error.message });
+  return res.status(500).json({ message: error.message });
 }
 });
 
