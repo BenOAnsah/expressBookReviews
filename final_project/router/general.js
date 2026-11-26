@@ -36,21 +36,31 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
+public_users.get('/', async function (req, res) {
   //Write your code here
-  res.send(JSON.stringify(books));
+  try {
+    res.send(JSON.stringify(books));
+  } catch (error){
+    res.status(500).send(error.message)
+  }
+  
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn', async function (req, res) {
   //Write your code here
-  const isbn = req.params.isbn;
-  res.send(books[isbn]);
+  try {
+    const isbn = req.params.isbn;
+    res.send(books[isbn]);
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
  });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
+public_users.get('/author/:author', async function (req, res) {
   //Write your code here
+  try {
   const author = req.params.author;
   const isbns = Object.keys(books);
   const booksByAuthor = [];
@@ -61,11 +71,15 @@ public_users.get('/author/:author',function (req, res) {
     }
   }  
   return res.send(booksByAuthor);
+} catch (error){
+    return res.status(500).json({ message: error.message });
+}
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
+  try {
   const title = req.params.title;
   const isbns = Object.keys(books);
   booksByTitle = [];
@@ -76,6 +90,9 @@ public_users.get('/title/:title',function (req, res) {
     }
   }  
   return res.send(booksByTitle);
+} catch (error){
+ return res.status(500).json({ message: error.message });
+}
 });
 
 //  Get book review

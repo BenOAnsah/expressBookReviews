@@ -83,12 +83,19 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
     const username = req.session.authorization.username;
 
-    if (!books[isbn] || !Object.prototype.hasOwnProperty.call(books[isbn].reviews, username)) {
-        return res.status(404).send("Review not found");
-      }
-    
+    if (!username) {
+    return res.status(401).json({ message: "Please log in first" });
+  }
+
+  if (!books[isbn]) {
+    return res.status(404).json({ message: "Book not found" });
+  }
+
+  if (books[isbn].reviews) {
     delete books[isbn].reviews[username];
-    return res.send("Review deleted successfully");
+  }
+
+  return res.status(200).json(books[isbn].reviews);
 });
 
 module.exports.authenticated = regd_users;
